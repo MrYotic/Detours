@@ -1473,7 +1473,7 @@ PVOID WINAPI DetourSetSystemRegionUpperBound(_In_ PVOID pSystemRegionUpperBound)
     return pPrevious;
 }
 
-LONG WINAPI DetourTransactionBegin()
+__declspec(dllexport) LONG __cdecl DetourTransactionBegin()
 {
     // Only one transaction is allowed at a time.
 _Benign_race_begin_
@@ -1541,7 +1541,7 @@ LONG WINAPI DetourTransactionAbort()
     return NO_ERROR;
 }
 
-LONG WINAPI DetourTransactionCommit()
+__declspec(dllexport) LONG __cdecl DetourTransactionCommit()
 {
     return DetourTransactionCommitEx(NULL);
 }
@@ -1835,7 +1835,7 @@ typedef ULONG_PTR DETOURS_EIP_TYPE;
     return s_nPendingError;
 }
 
-LONG WINAPI DetourUpdateThread(_In_ HANDLE hThread)
+__declspec(dllexport) LONG __cdecl DetourUpdateThread(_In_ HANDLE hThread)
 {
     LONG error;
 
@@ -1878,7 +1878,12 @@ LONG WINAPI DetourUpdateThread(_In_ HANDLE hThread)
 
 ///////////////////////////////////////////////////////////// Transacted APIs.
 //
-LONG WINAPI DetourAttach(_Inout_ PVOID *ppPointer,
+__declspec(dllexport) BOOL __cdecl DllDetourRestoreAfterWith(VOID)
+{
+    return DetourRestoreAfterWith();
+}
+
+__declspec(dllexport) LONG __cdecl DetourAttach(_Inout_ PVOID *ppPointer,
                          _In_ PVOID pDetour)
 {
     return DetourAttachEx(ppPointer, pDetour, NULL, NULL, NULL);
@@ -2238,7 +2243,7 @@ LONG WINAPI DetourAttachEx(_Inout_ PVOID *ppPointer,
     return NO_ERROR;
 }
 
-LONG WINAPI DetourDetach(_Inout_ PVOID *ppPointer,
+__declspec(dllexport) LONG __cdecl DetourDetach(_Inout_ PVOID *ppPointer,
                          _In_ PVOID pDetour)
 {
     LONG error = NO_ERROR;

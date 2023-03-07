@@ -36,6 +36,7 @@
 #pragma warning(disable:6102 6103) // /analyze warnings
 #endif
 #include <strsafe.h>
+#include <cstdint>
 #pragma warning(pop)
 #endif
 
@@ -517,14 +518,15 @@ typedef VOID * PDETOUR_LOADED_BINARY;
 
 //////////////////////////////////////////////////////////// Transaction APIs.
 //
-LONG WINAPI DetourTransactionBegin(VOID);
+__declspec(dllexport) BOOL __cdecl DllDetourRestoreAfterWith(VOID);
+__declspec(dllexport) LONG __cdecl DetourTransactionBegin(VOID);
 LONG WINAPI DetourTransactionAbort(VOID);
-LONG WINAPI DetourTransactionCommit(VOID);
+__declspec(dllexport) LONG __cdecl DetourTransactionCommit(VOID);
 LONG WINAPI DetourTransactionCommitEx(_Out_opt_ PVOID **pppFailedPointer);
 
-LONG WINAPI DetourUpdateThread(_In_ HANDLE hThread);
+__declspec(dllexport) LONG __cdecl DetourUpdateThread(_In_ HANDLE hThread);
 
-LONG WINAPI DetourAttach(_Inout_ PVOID *ppPointer,
+__declspec(dllexport) LONG __cdecl DetourAttach(_Inout_ PVOID *ppPointer,
                          _In_ PVOID pDetour);
 
 LONG WINAPI DetourAttachEx(_Inout_ PVOID *ppPointer,
@@ -533,7 +535,7 @@ LONG WINAPI DetourAttachEx(_Inout_ PVOID *ppPointer,
                            _Out_opt_ PVOID *ppRealTarget,
                            _Out_opt_ PVOID *ppRealDetour);
 
-LONG WINAPI DetourDetach(_Inout_ PVOID *ppPointer,
+__declspec(dllexport) LONG __cdecl DetourDetach(_Inout_ PVOID *ppPointer,
                          _In_ PVOID pDetour);
 
 BOOL WINAPI DetourSetIgnoreTooSmall(_In_ BOOL fIgnore);
